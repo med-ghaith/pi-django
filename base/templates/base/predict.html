@@ -1,0 +1,10 @@
+<form action="{% url 'predict' %}" method="get">
+    <input type="text" name="Number_of_establishments">
+    <input type="text" name="Number_of_rooms">
+    <input type="text" name="Number_of_bed_place">
+    <input type="text" name="Occupancy_rate_rooms">
+    <input type="text" name="Occupancy_rate_bed">
+    <button type="submit">Predict</button>
+  </form>
+
+  <h1>Predicted Average Length of Stay: {{ predicted_value }}</h1>
