@@ -534,10 +534,10 @@ label {
 }
 
 input[type="submit"] {
-  background-color: #fc036b;
+  background-color: #847f81;
   color: whitesmoke;
   padding: 12px 50px;
-  border: 2px solid #fc036b;
+  border: 2px solid #353435;
   border-radius: 100vmax;
   cursor: pointer;
   font-family: var(--ff-montserrat);

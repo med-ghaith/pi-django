@@ -1,9 +1,31 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Predicted Average Length of Stay</title>
-  </head>
-  <body>
-    <h1>Predicted Average Length of Stay: {{ predicted_value }}</h1>
-  </body>
-</html>
+{% extends 'main.html' %}
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/style_main.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+{% endblock css %}
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock js %}
+
+
+{% block content %}
+<div class="container">
+  <div class="layout__box">
+    <div class="layout__boxHeader">
+      <div class="layout__boxTitle">
+        <h3>Prediction</h3>
+      </div>
+    </div>
+    <div class="flex justify-center">
+    <h1>Predicted Average Length of Stay: </h1>
+    <br>
+    <br>
+    <h1>{{ predicted_value }}</h1>
+  </div>
+  </div>
+  </div>
+    {% endblock content %}
