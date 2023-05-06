@@ -55,6 +55,8 @@ def registerPage(request):
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
+        print(request.POST)
+        print(form.is_valid())
         if form.is_valid():
             print(form)
             user = form.save(commit=False)
@@ -99,7 +101,7 @@ def predict_view(request):
     else:
         form = PredictionForm()
 
-    return render(request, 'base/predict_form.html', {'form': form})
+    return render(request, 'base/predict_form.html', {'form': form, })
 
 
 

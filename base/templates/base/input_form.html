@@ -1,13 +1,54 @@
-<form method="POST">
-    {% csrf_token %}
-    <label for="city">City:</label>
-    <input type="text" name="city" id="city" required><br><br>
-    
-    <label for="number">Number of guests:</label>
-    <input type="number" name="number" id="number" required><br><br>
-    
-    <label for="features">Desired room amenities:</label>
-    <input type="text" name="features" id="features" required><br><br>
-    
-    <input type="submit" value="Get Recommendations">
-</form>
+
+
+{% extends 'main.html' %}
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+{% endblock css %}
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock js %}
+
+
+{% block content %}
+
+<div class="container">
+  <div class="layout__box">
+    <div class="layout__boxHeader">
+      <div class="layout__boxTitle">
+        <h3>Recommendations</h3>
+      </div>
+    </div>
+    <div class="layout__body">
+      <h2 class="auth__tagline">Hotel Recommendation System</h2>
+
+      <form class="form" action="" method="POST">
+        {% csrf_token %}
+
+        <div class="form__group form__group">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="city" />
+          </div>
+
+          <div class="form__group form__group">
+            <label for="number">Number of guests:</label>
+            <input id="number" name="number" type="number" placeholder="Number of guests" />
+          </div>
+          <div class="form__group form__group">
+            <label for="features">Features:</label>
+            <textarea id="features" name="features" type="text" placeholder="features" ></textarea>
+          </div>
+
+
+        
+            <input class="btn btn--main" type="submit" value="Get Recommendations">
+
+      </form>
+
+     
+      
+    </div>
+  </div>
+</div>
+{% endblock content %}

@@ -1,10 +1,42 @@
-{% if recommendations %}
-    <h1>Recommended Hotels:</h1>
-    <ul>
+{% extends 'main.html' %}
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+{% endblock css %}
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock js %}
+
+
+{% block content %}
+<div class="container">
+    <div class="layout__box">
+        <table class="table-auto border-collapse">
+        <thead>
+          <tr class="bg-gray-200">
+            <th class="px-4 py-2">Hotel Name</th>
+            <th class="px-4 py-2">Address</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% if recommendations %}
+    <h1 class="text-xl font-bold">Recommended Hotels:</h1>
     {% for hotel in recommendations %}
-        <li>{{ hotel.hotelname }} - {{ hotel.address }}</li>
+    <tr class="border-t">
+    
+    <td class="px-4 py-2">{{ hotel.hotelname }}</td>
+            <td class="px-4 py-2">{{ hotel.address }}</td>
+        
     {% endfor %}
-    </ul>
+    </tr>
 {% else %}
-    <p>No recommendations found.</p>
+    <p class="px-4 py-2">No recommendations found.</p>
 {% endif %}
+          
+        </tbody>
+      </table>
+    </div>
+</div>
+{% endblock content %}
