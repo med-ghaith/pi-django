@@ -8,13 +8,14 @@
 {% endblock css %}
 {% block js %}
 <script src="{% static 'js/script.js' %}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 {% endblock js %}
 
 
 {% block content %}
 
 <div class="container">
-  <div class="layout__box">
+  <div class="layout__box mt-10">
     <div class="layout__boxHeader">
       <div class="layout__boxTitle">
         <h3>Predict Average Length of Stay</h3>
@@ -34,7 +35,7 @@
         {% endfor %}
 
 
-        <button class="btn btn--main" type="submit">
+        <button class="btn btn--main bg-white" type="submit">
           
 
           Predict

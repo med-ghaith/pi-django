@@ -160,3 +160,6 @@ def recommendation_view(request):
         # Render the form
         return render(request, 'base/input_form.html')
 
+
+
+
