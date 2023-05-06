@@ -1,0 +1,10 @@
+{% if recommendations %}
+    <h1>Recommended Hotels:</h1>
+    <ul>
+    {% for hotel in recommendations %}
+        <li>{{ hotel.hotelname }} - {{ hotel.address }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No recommendations found.</p>
+{% endif %}

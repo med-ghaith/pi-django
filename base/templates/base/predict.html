@@ -1,10 +1,36 @@
-<form action="{% url 'predict' %}" method="get">
-    <input type="text" name="Number_of_establishments">
-    <input type="text" name="Number_of_rooms">
-    <input type="text" name="Number_of_bed_place">
-    <input type="text" name="Occupancy_rate_rooms">
-    <input type="text" name="Occupancy_rate_bed">
-    <button type="submit">Predict</button>
-  </form>
-
+{% extends 'main.html' %}
+{% block content %}
   <h1>Predicted Average Length of Stay: {{ predicted_value }}</h1>
+
+  <!-- contact -->
+<section id="contact">
+  <div class="title">
+      <h1 class="font-color">Contact Us</h1>
+      <div class="line"></div>
+  </div>
+  <div class="contact_us">
+      <form class="cform" action="{% url 'predict' %}" method="get">
+          <div class="crow-message">
+              <h1 class="color">Send us a message</h1>
+              <div></div>
+          </div>
+          <div class="crow-in">
+            <input type="text" name="Number_of_establishments">
+            <input type="text" name="Number_of_rooms">
+          </div>
+          
+          <div class="crow">
+              <div class="ccol-left">
+                <input type="text" name="Number_of_bed_place">
+                <input type="text" name="Occupancy_rate_rooms">
+                <input type="text" name="Occupancy_rate_bed">
+              </div>
+          </div>
+          <button class="crow-s" type="submit">Predict</button>
+         
+      </form>
+      </div>
+</section>
+<!-- contact  -->
+
+{% endblock content %}

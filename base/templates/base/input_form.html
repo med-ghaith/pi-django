@@ -1,0 +1,13 @@
+<form method="POST">
+    {% csrf_token %}
+    <label for="city">City:</label>
+    <input type="text" name="city" id="city" required><br><br>
+    
+    <label for="number">Number of guests:</label>
+    <input type="number" name="number" id="number" required><br><br>
+    
+    <label for="features">Desired room amenities:</label>
+    <input type="text" name="features" id="features" required><br><br>
+    
+    <input type="submit" value="Get Recommendations">
+</form>

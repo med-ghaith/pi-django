@@ -38,9 +38,11 @@
             <!-- Not Logged In -->
             <a href="{% url 'login' %}">
                 <img src="{% static 'images/avatar.svg' %}" />
-                <p>Login</p>
+                <p class="cir_border">Login</p>
             </a>
             {% endif %}
+
+            {% if request.user.is_authenticated %}
 
             <div class="dropdown-menu">
                 <a href="" class="dropdown-link"><svg version="1.1"
@@ -63,6 +65,7 @@
                     </svg>
                     Logout</a>
             </div>
+            {% endif %}
     </ul>
     <img src="{% static 'images/menu-btn.png' %}" alt="" class="menu-btn">
 </nav>

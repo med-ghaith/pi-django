@@ -10,6 +10,18 @@ from django.http import JsonResponse
 import numpy as np
 from .forms import PredictionForm
 import os
+import pickle
+import pandas as pd
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+import numpy as np
+import pandas as pd
+import nltk
+nltk.download('punkt')
+nltk.download('stopwords')
+nltk.download('wordnet')
+
 # Create your views here.
 
 def loginPage(request):
@@ -44,6 +56,7 @@ def registerPage(request):
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
         if form.is_valid():
+            print(form)
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
@@ -56,7 +69,6 @@ def registerPage(request):
 
 def home(request):
     return render(request, 'base/home.html')
-
 
 
 def predict_view(request):
@@ -76,6 +88,7 @@ def predict_view(request):
 
             # load the model and use it to make a prediction
             model_file = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'model.pkl')
+            print(joblib.__version__)
 
 # load the model into memory
             pipeline = joblib.load(model_file)
@@ -87,3 +100,61 @@ def predict_view(request):
         form = PredictionForm()
 
     return render(request, 'base/predict_form.html', {'form': form})
+
+
+
+hotel = pd.read_csv(r'C:\Users\medGhaith\Desktop\pi-web\pi\base\hotel.csv')
+
+def requirementbased(city,number,features):
+    hotel['city']=hotel['city'].str.lower()
+    hotel['roomamenities']=hotel['roomamenities'].str.lower()
+    features=features.lower()
+    features_tokens=word_tokenize(features)  
+    sw = stopwords.words('english')
+    lemm = WordNetLemmatizer()
+    f1_set = {w for w in features_tokens if not w in sw}
+    f_set=set()
+    for se in f1_set:
+        f_set.add(lemm.lemmatize(se))
+    reqbased=hotel[hotel['city']==city.lower()]
+    reqbased=reqbased[reqbased['guests_no']==number]
+    reqbased=reqbased.set_index(np.arange(reqbased.shape[0]))
+    l1 =[];l2 =[];cos=[];
+    #print(reqbased['roomamenities'])
+    for i in range(reqbased.shape[0]):
+        temp_tokens=word_tokenize(reqbased['roomamenities'][i])
+        temp1_set={w for w in temp_tokens if not w in sw}
+        temp_set=set()
+        for se in temp1_set:
+            temp_set.add(lemm.lemmatize(se))
+        rvector = temp_set.intersection(f_set)
+        #print(rvector)
+        cos.append(len(rvector))
+    reqbased['similarity']=cos
+    reqbased=reqbased.sort_values(by='similarity',ascending=False)
+    reqbased.drop_duplicates(subset='hotelcode',keep='first',inplace=True)
+    return reqbased[['hotelname','roomtype','guests_no','starrating','address','roomamenities','ratedescription','similarity']].head(10)
+
+
+def recommendation_view(request):
+    if request.method == 'POST':
+        # Get the user inputs from the form
+        city = request.POST['city']
+        number = int(request.POST['number'])
+        features = request.POST['features']
+        
+        # Call the recommendation function to generate recommendations based on the inputs
+        recommendations = requirementbased(city, number, features)
+        recommendations_list = []
+        for index, row in recommendations.iterrows():
+            recommendations_list.append({
+                'hotelname': row['hotelname'],
+                'address': row['address']
+            })
+        print(recommendations)
+        # Pass the recommendations to the template
+        return render(request, 'base/recommendations.html', {'recommendations': recommendations_list})
+    else:
+        # Render the form
+        return render(request, 'base/input_form.html')
+
