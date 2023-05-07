@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" href="{% static 'styles/style.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/style_main.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/responsive.css' %}" />
+{% endblock css %}
+{% block js %}
+<script src="{% static 'js/script.js' %}"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock js %}
+
+
+{% block content %}
+
+<div class="container bg-gray-200">
+    <div class="mt-40">
+    <h1 class="text-gray-700">Select a Country</h1>
+    <hr>
+    
+    <form method="POST" class="form">
+      {% csrf_token %}
+      <div class="form-group">
+        <div class="mb-3">
+            <label for="country" class="block text-gray-700 font-bold mb-2">Country:</label>
+            <select name="country" id="country" class="form-select block w-full mt-1 text-black">
+              {% for country in countries %}
+              <option value="{{ country }}">{{ country }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-700">Submit</button>
+    </form>
+</div>
+  </div>
+
+  {% endblock content %}

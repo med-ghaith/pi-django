@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from .models import User
 from .forms import  UserForm, MyUserCreationForm
+from django.contrib.auth.decorators import login_required
 import joblib
 from django.http import JsonResponse
 import numpy as np
@@ -73,6 +74,7 @@ def home(request):
     return render(request, 'base/home.html')
 
 
+@login_required(login_url='login')
 def predict_view(request):
     if request.method == 'POST':
         form = PredictionForm(request.POST)
@@ -138,6 +140,7 @@ def requirementbased(city,number,features):
     return reqbased[['hotelname','roomtype','guests_no','starrating','address','roomamenities','ratedescription','similarity']].head(10)
 
 
+@login_required(login_url='login')
 def recommendation_view(request):
     if request.method == 'POST':
         # Get the user inputs from the form
@@ -163,3 +166,66 @@ def recommendation_view(request):
 
 
 
+
+from statsmodels.tsa.arima_model import ARIMA
+import pandas as pd
+import matplotlib.pyplot as plt
+data = pd.read_excel(r'C:\Users\medGhaith\Desktop\pi-web\pi\base\inbound_arrivals_v2.xlsx')
+data.dropna(subset=['Total_arrivals'], how='any', inplace=True)
+data['year'] = pd.to_datetime(data['year'], format='%Y')
+data = data.set_index('year')
+def forecast(request, country):
+    # Load the data into a pandas dataframe
+   
+
+    # Extract data for the selected country
+    country_data = data[data['country'] == country]['Total_arrivals']
+            
+    # Split data into train and test sets (80/20 split)
+    train_data = country_data.iloc[:int(len(country_data) * 0.8)]
+    test_data = country_data.iloc[int(len(country_data) * 0.8):]
+            
+    # Fit ARIMA model
+    model = ARIMA(train_data, order=(1, 0, 0))
+    model_fit = model.fit()
+            
+    # Forecast the next year
+    forecast = model_fit.forecast(steps=len(test_data) + 12)
+    forecast_values = forecast[0]
+    forecast_index = pd.date_range(start=test_data.index[-1], periods=len(forecast_values), freq='Y')
+    forecast_series = pd.Series(forecast_values, index=forecast_index)
+
+# Plot the forecasted data
+    plt.figure(figsize=(12, 6))
+    plt.plot(train_data.index, train_data.values, label='Train Data')
+    plt.plot(forecast_series.index, forecast_series.values, label='Forecasted Data')
+    plt.plot(test_data.index, test_data.values, label='Test Data')
+    plt.xlabel('Year')
+    plt.ylabel('Number of Arrivals')
+    plt.title(f'ARIMA Forecast for {country}')
+    plt.legend()
+            
+    # Convert the plot to a string and pass it to the template
+    from io import BytesIO
+    import base64
+            
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_png = buffer.getvalue()
+    buffer.close()
+    graphic = base64.b64encode(image_png).decode('utf-8')
+            
+    context = {'graphic': graphic}
+    return render(request, 'base/forecast.html', context)
+
+
+def country_select(request):
+    if request.method == 'POST':
+        # Get the selected country from the form data
+        country = request.POST.get('country')
+        return redirect('forecast', country=country)
+    else:
+        data = pd.read_excel(r'C:\Users\medGhaith\Desktop\pi-web\pi\base\inbound_arrivals_v2.xlsx')
+        countries = data['country'].unique().tolist()
+        return render(request, 'base/country_select.html', {'countries': countries})

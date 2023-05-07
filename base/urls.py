@@ -8,5 +8,7 @@ urlpatterns = [
     path('', views.home, name="home"),
     path('predict/', views.predict_view, name="predict"),
     path('recommend/', views.recommendation_view, name='recommendation_view'),
+    path('country', views.country_select, name='country_select'),
+    path('forecast/<str:country>', views.forecast, name='forecast'),
     
 ]
