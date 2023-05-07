@@ -219,7 +219,7 @@ def forecast(request, country):
     context = {'graphic': graphic}
     return render(request, 'base/forecast.html', context)
 
-
+@login_required(login_url='login')
 def country_select(request):
     if request.method == 'POST':
         # Get the selected country from the form data
