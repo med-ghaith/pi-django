@@ -166,6 +166,7 @@ def recommendation_view(request):
 
 
 
+import statsmodels.api as sm
 
 from statsmodels.tsa.arima_model import ARIMA
 import pandas as pd
@@ -177,7 +178,7 @@ data = data.set_index('year')
 def forecast(request, country):
     # Load the data into a pandas dataframe
    
-
+    print(sm.__version__)
     # Extract data for the selected country
     country_data = data[data['country'] == country]['Total_arrivals']
             

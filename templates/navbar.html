@@ -5,11 +5,11 @@
         style="margin: -25px -20px"><h1 class="logo">Tourism</h1></a></span>
     <ul class="nav-links">
         <li><a href="{% url 'home' %}" id="pri" class="active cir_border">Home</a></li>
-        <li><a href="#events"  id="sec" class="cir_border">Tours</a></li>
-        <li><a href="#explore" id="tri" class="cir_border">Explore</a></li>
-        <li><a href="#about" id="quad" class="cir_border">About</a></li>
-        <li><a href="#dashboard" id="quint" class="cir_border">Dashboard</a></li>
-        <li><a href="#contact" id="hex" class="cir_border">Contact</a></li>
+        <li><a href="{% url 'home' %}#events"  id="sec" class="cir_border">Tours</a></li>
+        <li><a href="{% url 'home' %}#explore" id="tri" class="cir_border">Explore</a></li>
+        <li><a href="{% url 'home' %}#about" id="quad" class="cir_border">About</a></li>
+        <li><a href="{% url 'home' %}#dashboard" id="quint" class="cir_border">Dashboard</a></li>
+        <li><a href="{% url 'home' %}#contact" id="hex" class="cir_border">Contact</a></li>
         <li><a href="{% url 'recommendation_view' %}" id="predict" class="cir_border">Recommendations</a></li>
         <li><a href="{% url 'predict' %}" id="predict" class="cir_border">Prediction</a></li>
         
